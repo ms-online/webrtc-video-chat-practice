@@ -5,7 +5,7 @@ video-chat-frontend/node_modules
 video-chat-frontend/.pnp
 .pnp.js
 
-video-chat-server/node_modules
+/video-chat-server/node_modules
 
 # testing
 video-chat-frontend/coverage
