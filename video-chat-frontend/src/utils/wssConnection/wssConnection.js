@@ -12,3 +12,11 @@ export const connectWithSocket = () => {
     console.log(socket.id);
   });
 };
+
+//注册新用户
+export const registerNewUser = (username) => {
+  socket.emit('register-new-user', {
+    username,
+    socketId: socket.id,
+  });
+};

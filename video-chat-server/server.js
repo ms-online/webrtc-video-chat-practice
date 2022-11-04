@@ -24,9 +24,22 @@ const io = socket(server, {
   },
 });
 
+//初始化对等连接用户数组
+const peers = [];
+
 //监听客户端socket连接
 io.on('connection', (socket) => {
   socket.emit('connection', null);
   console.log('新用户加入房间');
   console.log(socket.id);
+
+  //服务器保存注册的新用户数据
+  socket.on('register-new-user', (data) => {
+    peers.push({
+      username: data.username,
+      socketId: data.socketId,
+    });
+    console.log('注册新用户');
+    console.log(peers);
+  });
 });

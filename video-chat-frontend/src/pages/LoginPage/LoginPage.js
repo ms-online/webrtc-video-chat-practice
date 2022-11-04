@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SubmitButton from './components/SubmitButton';
 import UsernameInput from './components/UsernameInput';
 import { setUsername } from '../../store/actions/dashboardActions';
+import { registerNewUser } from '../../utils/wssConnection/wssConnection';
 import './LoginPage.css';
 
 const LoginPage = ({ saveUsername }) => {
@@ -14,6 +15,8 @@ const LoginPage = ({ saveUsername }) => {
 
   //提交handle函数
   const handleSubmitButtonPressed = () => {
+    //注册新用户
+    registerNewUser(username);
     //保存username到store
     saveUsername(username);
     //跳转到Dashboard页面
