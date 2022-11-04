@@ -23,7 +23,7 @@ const Dashboard = () => {
         </div>
         {/* logo */}
         <div className='dashboard_logo_container'>
-          <img className='dashboard_logo_image' src={logo} />
+          <img className='dashboard_logo_image' src={logo} alt='VideoChat' />
         </div>
       </div>
     </div>
