@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../../resources/logo.png';
+import ActiveUserList from './components/ActiveUserList';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -17,7 +18,9 @@ const Dashboard = () => {
       {/* 右侧部分 */}
       <div className='dashboard_right_section background_secondary_color'>
         {/* 活跃用户 */}
-        <div className='dashboard_active_users_list'>活跃用户</div>
+        <div className='dashboard_active_users_list'>
+          <ActiveUserList />
+        </div>
         {/* logo */}
         <div className='dashboard_logo_container'>
           <img className='dashboard_logo_image' src={logo} />
