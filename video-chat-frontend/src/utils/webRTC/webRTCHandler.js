@@ -1,5 +1,9 @@
 import store from '../../store/store';
-import { setLocalStream } from '../../store/actions/callActions';
+import {
+  setLocalStream,
+  setCallState,
+  callState,
+} from '../../store/actions/callActions';
 
 //默认定义
 const defaultConstrains = {
@@ -13,7 +17,7 @@ export const getLocalStream = () => {
     .getUserMedia(defaultConstrains)
     .then((stream) => {
       store.dispatch(setLocalStream(stream));
-      console.log(stream);
+      store.dispatch(setCallState(callState.CALL_AVAILABLE));
     })
     .catch((error) => {
       console.log('尝试获取访问权限以获取本地媒体流时出错');

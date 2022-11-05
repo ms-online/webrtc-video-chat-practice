@@ -1,7 +1,9 @@
 import * as callActions from '../actions/callActions';
 
+//初始化状态
 const initialState = {
   localStream: null,
+  callState: callActions.callState.CALL_UNAVAILABLE,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,7 +14,11 @@ const reducer = (state = initialState, action) => {
         localStream: action.localStream,
       };
 
-      break;
+    case callActions.CALL_SET_CALL_STATE:
+      return {
+        ...state,
+        callState: action.callState,
+      };
 
     default:
       return state;

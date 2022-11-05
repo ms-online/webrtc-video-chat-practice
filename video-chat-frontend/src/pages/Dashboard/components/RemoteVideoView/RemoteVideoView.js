@@ -26,7 +26,7 @@ const RemoteVideoView = ({ remoteStream }) => {
   }, [remoteStream]);
   return (
     <div style={styles.videoContainer}>
-      <video ref={remoteVideoRef} style={styles.videoElement} autoplay />
+      <video ref={remoteVideoRef} style={styles.videoElement} autoPlay />
     </div>
   );
 };
