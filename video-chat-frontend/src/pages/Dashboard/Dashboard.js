@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import logo from '../../resources/logo.png';
 import * as webRTCHandler from '../../utils/webRTC/webRTCHandler';
-import ActiveUserList from './components/ActiveUserList';
+import ActiveUserList from './components/ActiveUserList/ActiveUserList';
+import DirectCall from './components/DirectCall/DirectCall';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -19,7 +20,9 @@ const Dashboard = () => {
       {/* 左侧部分  */}
       <div className='dashboard_left_section'>
         {/* 内容介绍 */}
-        <div className='dashboard_content_container'>内容</div>
+        <div className='dashboard_content_container'>
+          <DirectCall />
+        </div>
         <div className='dashboard_rooms_container background_secondary_color'>
           房间
         </div>
