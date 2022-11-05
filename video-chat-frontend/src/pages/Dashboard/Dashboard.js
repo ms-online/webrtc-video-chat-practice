@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import logo from '../../resources/logo.png';
+import * as webRTCHandler from '../../utils/webRTC/webRTCHandler';
 import ActiveUserList from './components/ActiveUserList';
 import './Dashboard.css';
 
 const Dashboard = () => {
+  const firstRenderRef = useRef(true);
+  useEffect(() => {
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+      return;
+    }
+    webRTCHandler.getLocalStream();
+  }, []);
   return (
     // 外层容器
     <div className='dashboard_container background_main_color'>
