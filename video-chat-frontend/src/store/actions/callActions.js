@@ -4,6 +4,7 @@ export const CALL_SET_CALL_STATE = 'CALL_SET_CALL_STATE';
 export const CALL_SET_CALLING_DIALOG_VISIBLE =
   'CALL_SET_CALLING_DIALOG_VISIBLE';
 export const CALL_SET_CALLER_USERNAME = 'CALL_SET_CALLER_USERNAME';
+export const CALL_SET_CALL_REJECTED = 'CALL_SET_CALL_REJECTED';
 
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
@@ -41,5 +42,16 @@ export const setCallerUsername = (callerUsername) => {
   return {
     type: CALL_SET_CALLER_USERNAME,
     callerUsername,
+  };
+};
+
+//设置通信拒绝
+export const setCallRejected = (callRejectedDetails) => {
+  return {
+    type: CALL_SET_CALL_REJECTED,
+    callRejected: {
+      rejected: callRejectedDetails.rejected,
+      reason: callRejectedDetails.reason,
+    },
   };
 };

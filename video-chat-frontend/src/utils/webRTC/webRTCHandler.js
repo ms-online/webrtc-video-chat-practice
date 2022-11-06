@@ -5,6 +5,7 @@ import {
   setCallingDialogVisible,
   setCallerUsername,
   callStates,
+  setCallRejected,
 } from '../../store/actions/callActions';
 import * as wss from '../wssConnection/wssConnection';
 
@@ -23,7 +24,7 @@ const defaultConstrains = {
 };
 //获取通过socket连接的用户的socketId，让服务器知道谁在和谁通信
 let connectUserSocketId;
-
+let rejectedReason;
 //获取用户的本地媒体流并保存到store中
 export const getLocalStream = () => {
   navigator.mediaDevices
@@ -92,7 +93,6 @@ export const handlePreOfferAnswer = (data) => {
   if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
     // 进入到webRTC逻辑
   } else {
-    let rejectedReason;
     if (data.answer === preOfferAnswers.CALL_NOT_AVAILABLE) {
       rejectedReason = '应答方现在无法接听电话';
     } else {
@@ -100,5 +100,11 @@ export const handlePreOfferAnswer = (data) => {
     }
   }
 
-  //dispatch 拒绝接听的action，后面完成
+  //dispatch 拒绝接听的action
+  store.dispatch(
+    setCallRejected({
+      rejected: true,
+      reason: rejectedReason,
+    })
+  );
 };
