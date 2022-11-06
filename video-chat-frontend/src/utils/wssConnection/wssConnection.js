@@ -29,6 +29,11 @@ export const connectWithSocket = () => {
   socket.on('pre-offer', (data) => {
     webRTCHandler.handlePreOffer(data);
   });
+
+  //呼叫方监听服务器返回的应答方回复的data数据
+  socket.on('pre-offer-answer', (data) => {
+    webRTCHandler.handlePreOfferAnswer(data);
+  });
 };
 
 //注册新用户
@@ -58,4 +63,9 @@ const handleBroadcastEvents = (data) => {
 //向服务器发送预呼叫数据
 export const sendPreOffer = (data) => {
   socket.emit('pre-offer', data);
+};
+
+//应答方向服务器发送预呼叫处理的回复
+export const sendPreOfferAnswer = (data) => {
+  socket.emit('pre-offer-answer', data);
 };

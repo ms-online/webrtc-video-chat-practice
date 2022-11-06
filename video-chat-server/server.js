@@ -74,4 +74,13 @@ io.on('connection', (socket) => {
       callerSocketId: socket.id,
     });
   });
+
+  //监听应答方从客户端发送过来的预呼叫回复并获取data,传递给呼叫方
+  socket.on('pre-offer-answer', (data) => {
+    console.log('处理预呼叫回复');
+    //向呼叫方发送回复的data数据
+    io.to(data.callerSocketId).emit('pre-offer-answer', {
+      answer: data.answer,
+    });
+  });
 });
