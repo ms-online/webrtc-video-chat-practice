@@ -5,16 +5,24 @@ import CallRejectDialog from '../CallRejectDialog/CallRejectDialog';
 import IncomingCallDialog from '../IncomingCallDialog/IncomingCallDialog';
 import LocalVideoView from '../LocalVideoView/LocalVideoView';
 import RemoteVideoView from '../RemoteVideoView/RemoteVideoView';
-
-const DirectCall = ({ localStream, remoteStream }) => {
+import { callStates } from '../../../../store/actions/callActions';
+const DirectCall = ({
+  localStream,
+  remoteStream,
+  callerUsername,
+  callState,
+  callingDialogVisible,
+}) => {
   return (
     <>
       <LocalVideoView localStream={localStream} />
       {remoteStream && <RemoteVideoView remoteStream={remoteStream} />}
       {/* 不同状态下的直接呼叫对话框 */}
       {/* <CallRejectDialog /> */}
-      {/* <IncomingCallDialog /> */}
-      {/* <CallingDialog /> */}
+      {callState === callStates.CALL_REQUESTED && (
+        <IncomingCallDialog callerUsername={callerUsername} />
+      )}
+      {callingDialogVisible && <CallingDialog />}
     </>
   );
 };

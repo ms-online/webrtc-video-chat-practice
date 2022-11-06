@@ -3,7 +3,9 @@ import * as callActions from '../actions/callActions';
 //初始化状态
 const initialState = {
   localStream: null,
-  callState: callActions.callState.CALL_UNAVAILABLE,
+  callState: callActions.callStates.CALL_UNAVAILABLE,
+  callingDialogVisible: false,
+  callerUsername: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -18,6 +20,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         callState: action.callState,
+      };
+    case callActions.CALL_SET_CALLING_DIALOG_VISIBLE:
+      return {
+        ...state,
+        callingDialogVisible: action.visible,
+      };
+    case callActions.CALL_SET_CALLER_USERNAME:
+      return {
+        ...state,
+        callerUsername: action.callerUsername,
       };
 
     default:

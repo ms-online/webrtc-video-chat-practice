@@ -1,6 +1,6 @@
 import React from 'react';
 import './IncomingCallDialog.css';
-const IncomingCallDialog = () => {
+const IncomingCallDialog = ({ callerUsername }) => {
   const handleAcceptButtonPressed = () => {
     //接听呼叫
   };
@@ -10,7 +10,9 @@ const IncomingCallDialog = () => {
   };
   return (
     <div className='direct_calling_dialog background_secondary_color'>
-      <span className='direct_call_dialog_caller_name'>Summer的来电</span>
+      <span className='direct_call_dialog_caller_name'>
+        {callerUsername}的来电
+      </span>
       <div className='direct_call_dialog_button_container'>
         <button
           className='direct_call_dialog_accept_button'

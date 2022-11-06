@@ -1,9 +1,11 @@
 import React from 'react';
 import userAvatar from '../../../../resources/userAvatar.png';
+import { callToOtherUser } from '../../../../utils/webRTC/webRTCHandler';
 
 function ActiveUserListItem({ activeUser }) {
   const handlerListItemPressed = () => {
     //点击活跃用户-进行呼叫
+    callToOtherUser(activeUser);
   };
   return (
     <div className='active_user_list_item' onClick={handlerListItemPressed}>

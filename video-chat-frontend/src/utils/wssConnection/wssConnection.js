@@ -1,6 +1,7 @@
 import socketClient from 'socket.io-client';
 import store from '../../store/store';
 import * as dashboardActions from '../../store/actions/dashboardActions';
+import * as webRTCHandler from '../webRTC/webRTCHandler';
 //定义广播类型的常量
 const broadcastEventTypes = {
   ACTIVE_USERS: 'ACTIVE_USERS',
@@ -22,6 +23,11 @@ export const connectWithSocket = () => {
   socket.on('broadcast', (data) => {
     //将活跃用户数组数据保存到store中
     handleBroadcastEvents(data);
+  });
+
+  //应答方监听从服务器返回的呼叫者传递的data数据
+  socket.on('pre-offer', (data) => {
+    webRTCHandler.handlePreOffer(data);
   });
 };
 
@@ -47,4 +53,9 @@ const handleBroadcastEvents = (data) => {
     default:
       break;
   }
+};
+
+//向服务器发送预呼叫数据
+export const sendPreOffer = (data) => {
+  socket.emit('pre-offer', data);
 };
