@@ -25,6 +25,7 @@ const defaultConstrains = {
 //获取通过socket连接的用户的socketId，让服务器知道谁在和谁通信
 let connectUserSocketId;
 let rejectedReason;
+
 //获取用户的本地媒体流并保存到store中
 export const getLocalStream = () => {
   navigator.mediaDevices
@@ -58,8 +59,8 @@ export const callToOtherUser = (calleeDetails) => {
 //处理从服务器返回的呼叫者的数据，并存储它的sockeId以及callerUsername
 export const handlePreOffer = (data) => {
   //判断是否不受客观通信因素影响
-
   if (checkIfCallPossible) {
+    console.log(checkIfCallPossible);
     connectUserSocketId = data.callerSocketId;
     //更新store中的callerUsername
     store.dispatch(setCallerUsername(data.callerUsername));
@@ -89,6 +90,7 @@ export const checkIfCallPossible = () => {
 
 //创建处理handlePreOfferAnswer的函数
 export const handlePreOfferAnswer = (data) => {
+  store.dispatch(setCallingDialogVisible(false));
   //验证answer结果，如果为CALL_ACCEPTED
   if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
     // 进入到webRTC逻辑
@@ -98,13 +100,41 @@ export const handlePreOfferAnswer = (data) => {
     } else {
       rejectedReason = '应答方拒绝你的呼叫';
     }
-  }
 
-  //dispatch 拒绝接听的action
-  store.dispatch(
-    setCallRejected({
-      rejected: true,
-      reason: rejectedReason,
-    })
-  );
+    //dispatch 拒绝接听的action
+    store.dispatch(
+      setCallRejected({
+        rejected: true,
+        reason: rejectedReason,
+      })
+    );
+
+    //重置data
+    resetCallData();
+  }
+};
+
+//定义接受呼叫请求的函数
+export const acceptIncomingCallRequest = () => {
+  wss.sendPreOfferAnswer({
+    callerSocketId: connectUserSocketId,
+    answer: preOfferAnswers.CALL_ACCEPTED,
+  });
+};
+
+//拒绝接听呼叫请求的函数
+export const rejectIncomingCallRequest = () => {
+  wss.sendPreOfferAnswer({
+    callerSocketId: connectUserSocketId,
+    answer: preOfferAnswers.CALL_REJECTED,
+  });
+
+  //拒绝之后重置
+  resetCallData();
+};
+
+//定义呼叫重置函数
+export const resetCallData = () => {
+  connectUserSocketId = null;
+  store.dispatch(setCallState(callStates.CALL_AVAILABLE));
 };
