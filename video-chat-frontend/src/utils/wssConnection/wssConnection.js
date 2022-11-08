@@ -44,6 +44,11 @@ export const connectWithSocket = () => {
   socket.on('webRTC-answer', (data) => {
     webRTCHandler.handleAnswer(data);
   });
+
+  //监听传递的ICE
+  socket.on('webRTC-candidate', (data) => {
+    webRTCHandler.handleCandidate(data);
+  });
 };
 
 //注册新用户
@@ -88,4 +93,9 @@ export const sendWebRTCOffer = (data) => {
 //Answer发送SDP到信令服务器
 export const sendWebRTCAnswer = (data) => {
   socket.emit('webRTC-answer', data);
+};
+
+//发送ICE候选人信息
+export const sendWebRTCCandidate = (data) => {
+  socket.emit('webRTC-candidate', data);
 };

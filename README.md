@@ -1,2 +1,2 @@
-lesson-23:创建webRTCAnswer并返回给呼叫方
+lesson-24:交换ICE候选人信息
 

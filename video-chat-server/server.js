@@ -99,4 +99,12 @@ io.on('connection', (socket) => {
       answer: data.answer,
     });
   });
+
+  //监听传递的ICE
+  socket.on('webRTC-candidate', (data) => {
+    console.log('处理webRTC-candidate');
+    io.to(data.connectUserSocketId).emit('webRTC-candidate', {
+      candidate: data.candidate,
+    });
+  });
 });

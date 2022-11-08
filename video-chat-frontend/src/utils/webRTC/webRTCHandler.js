@@ -62,6 +62,21 @@ const createPeerConnection = () => {
   for (const track of localStream.getTracks()) {
     peerConnection.addTrack(track, localStream);
   }
+
+  //每当远端的音视频数据传递过来的时候，onTrack事件就会被触发
+  peerConnection.ontrack = ({ streams: [stream] }) => {
+    //通过dispatch存储的stream到store中
+  };
+
+  //监听icecandidate事件并将更改后的描述信息传送给remote远端RTCPeerConnection并更新远端设备源
+  peerConnection.onicecandidate = (event) => {
+    if (event.candidate) {
+      wss.sendWebRTCCandidate({
+        candidate: event.candidate,
+        connectUserSocketId: connectUserSocketId,
+      });
+    }
+  };
 };
 
 //呼叫某个用户，获取应答者信息
@@ -192,4 +207,13 @@ export const handleOffer = async (data) => {
 //呼叫方处理应答方传递过来的Answer SDP
 export const handleAnswer = async (data) => {
   await peerConnection.setRemoteDescription(data.answer);
+};
+
+//处理ICE
+export const handleCandidate = async (data) => {
+  try {
+    await peerConnection.addIceCandidate(data.candidate);
+  } catch (error) {
+    console.log('尝试添加收到的ICE候选人时出错', err);
+  }
 };
