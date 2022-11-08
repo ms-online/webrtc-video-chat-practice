@@ -6,6 +6,7 @@ import {
   setCallerUsername,
   callStates,
   setCallRejected,
+  setRemoteStream,
 } from '../../store/actions/callActions';
 import * as wss from '../wssConnection/wssConnection';
 
@@ -66,6 +67,7 @@ const createPeerConnection = () => {
   //每当远端的音视频数据传递过来的时候，onTrack事件就会被触发
   peerConnection.ontrack = ({ streams: [stream] }) => {
     //通过dispatch存储的stream到store中
+    store.dispatch(setRemoteStream(stream));
   };
 
   //监听icecandidate事件并将更改后的描述信息传送给remote远端RTCPeerConnection并更新远端设备源
@@ -179,6 +181,9 @@ export const acceptIncomingCallRequest = () => {
     callerSocketId: connectUserSocketId,
     answer: preOfferAnswers.CALL_ACCEPTED,
   });
+
+  //接听后修改呼叫状态
+  store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
 };
 
 //拒绝接听呼叫请求的函数

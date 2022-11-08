@@ -5,6 +5,7 @@ export const CALL_SET_CALLING_DIALOG_VISIBLE =
   'CALL_SET_CALLING_DIALOG_VISIBLE';
 export const CALL_SET_CALLER_USERNAME = 'CALL_SET_CALLER_USERNAME';
 export const CALL_SET_CALL_REJECTED = 'CALL_SET_CALL_REJECTED';
+export const CALL_SET_REMOTE_STREAM = 'CALL_SET_REMOTE_STREAM';
 
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
@@ -53,5 +54,13 @@ export const setCallRejected = (callRejectedDetails) => {
       rejected: callRejectedDetails.rejected,
       reason: callRejectedDetails.reason,
     },
+  };
+};
+
+//设置远端发送的stream媒体流
+export const setRemoteStream = (remoteStream) => {
+  return {
+    type: CALL_SET_REMOTE_STREAM,
+    remoteStream,
   };
 };
