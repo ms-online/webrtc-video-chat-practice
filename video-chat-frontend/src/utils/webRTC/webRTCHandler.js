@@ -70,11 +70,19 @@ const createPeerConnection = () => {
 
   //监听icecandidate事件并将更改后的描述信息传送给remote远端RTCPeerConnection并更新远端设备源
   peerConnection.onicecandidate = (event) => {
+    //从STUN服务器获取ICE
+    console.log('从Stun服务器获取ICE信息');
     if (event.candidate) {
       wss.sendWebRTCCandidate({
         candidate: event.candidate,
         connectUserSocketId: connectUserSocketId,
       });
+    }
+  };
+
+  peerConnection.onconnectionstatechange = (event) => {
+    if (peerConnection.connectionState === 'connected') {
+      console.log('对等连接成功！');
     }
   };
 };
@@ -212,8 +220,10 @@ export const handleAnswer = async (data) => {
 //处理ICE
 export const handleCandidate = async (data) => {
   try {
+    //添加成功远程发送过来的ICE候选人
+    console.log('添加 ICE 候选人信息');
     await peerConnection.addIceCandidate(data.candidate);
   } catch (error) {
-    console.log('尝试添加收到的ICE候选人时出错', err);
+    console.log('尝试添加收到的ICE候选人时出错', error);
   }
 };
