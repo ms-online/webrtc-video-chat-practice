@@ -22,9 +22,20 @@ const defaultConstrains = {
   video: true,
   audio: true,
 };
+
+//configuration连接配置
+const configuration = {
+  iceServers: [
+    {
+      urls: 'stun:stun.l.google.com:19302',
+    },
+  ],
+};
+
 //获取通过socket连接的用户的socketId，让服务器知道谁在和谁通信
 let connectUserSocketId;
 let rejectedReason;
+let peerConnection;
 
 //获取用户的本地媒体流并保存到store中
 export const getLocalStream = () => {
@@ -38,6 +49,18 @@ export const getLocalStream = () => {
       console.log('尝试获取访问权限以获取本地媒体流时出错');
       console.log(error);
     });
+};
+
+//创建对等连接
+const createPeerConnection = () => {
+  peerConnection = new RTCPeerConnection(configuration);
+  //获取本地stream流
+  const localStream = store.getState().call.localStream;
+
+  //addTrack为初始化后的本地流对象添加音视频轨。若该本地流已经被发布，则该流会自动重新发布到远端。
+  for (const track of localStream.getTracks()) {
+    peerConnection.addTrack(track, localStream);
+  }
 };
 
 //呼叫某个用户，获取应答者信息
