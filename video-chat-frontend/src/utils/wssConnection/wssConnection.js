@@ -34,6 +34,16 @@ export const connectWithSocket = () => {
   socket.on('pre-offer-answer', (data) => {
     webRTCHandler.handlePreOfferAnswer(data);
   });
+
+  //应答方监听从服务器返回的呼叫方传递的SDP
+  socket.on('webRTC-offer', (data) => {
+    webRTCHandler.handleOffer(data);
+  });
+
+  //呼叫方监听从服务器返回的应答方传递的SDP
+  socket.on('webRTC-answer', (data) => {
+    webRTCHandler.handleAnswer(data);
+  });
 };
 
 //注册新用户
@@ -73,4 +83,9 @@ export const sendPreOfferAnswer = (data) => {
 //Offer发送SDP到信令服务器
 export const sendWebRTCOffer = (data) => {
   socket.emit('webRTC-offer', data);
+};
+
+//Answer发送SDP到信令服务器
+export const sendWebRTCAnswer = (data) => {
+  socket.emit('webRTC-answer', data);
 };

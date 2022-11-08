@@ -139,6 +139,7 @@ export const handlePreOfferAnswer = (data) => {
   }
 };
 
+//发送offer SDP
 const sendOffer = async () => {
   const offer = await peerConnection.createOffer();
   await peerConnection.setLocalDescription(offer);
@@ -172,4 +173,23 @@ export const rejectIncomingCallRequest = () => {
 export const resetCallData = () => {
   connectUserSocketId = null;
   store.dispatch(setCallState(callStates.CALL_AVAILABLE));
+};
+
+//应答方处理呼叫方传递过来的Offer SDP
+export const handleOffer = async (data) => {
+  await peerConnection.setRemoteDescription(data.offer);
+
+  // 创建answer 的SDP
+  const answer = await peerConnection.createAnswer();
+  await peerConnection.setLocalDescription(answer);
+
+  wss.sendWebRTCAnswer({
+    callerSocketId: connectUserSocketId,
+    answer: answer,
+  });
+};
+
+//呼叫方处理应答方传递过来的Answer SDP
+export const handleAnswer = async (data) => {
+  await peerConnection.setRemoteDescription(data.answer);
 };
