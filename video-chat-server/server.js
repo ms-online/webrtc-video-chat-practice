@@ -83,4 +83,12 @@ io.on('connection', (socket) => {
       answer: data.answer,
     });
   });
+
+  //监听呼叫方从客户端发送过来的Offer SDP并传递给应答方
+  socket.on('webRTC-offer', (data) => {
+    console.log('处理webRTC Offer');
+    io.to(data.callerSocketId).emit('webRTC-offer', {
+      offer: data.offer,
+    });
+  });
 });

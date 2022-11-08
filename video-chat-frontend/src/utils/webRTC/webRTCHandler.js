@@ -44,6 +44,7 @@ export const getLocalStream = () => {
     .then((stream) => {
       store.dispatch(setLocalStream(stream));
       store.dispatch(setCallState(callStates.CALL_AVAILABLE));
+      createPeerConnection();
     })
     .catch((error) => {
       console.log('尝试获取访问权限以获取本地媒体流时出错');
@@ -117,6 +118,7 @@ export const handlePreOfferAnswer = (data) => {
   //验证answer结果，如果为CALL_ACCEPTED
   if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
     // 进入到webRTC逻辑
+    sendOffer();
   } else {
     if (data.answer === preOfferAnswers.CALL_NOT_AVAILABLE) {
       rejectedReason = '应答方现在无法接听电话';
@@ -135,6 +137,16 @@ export const handlePreOfferAnswer = (data) => {
     //重置data
     resetCallData();
   }
+};
+
+const sendOffer = async () => {
+  const offer = await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+  //Offer发送SDP到信令服务器
+  wss.sendWebRTCOffer({
+    calleeSocketId: connectUserSocketId,
+    offer: offer,
+  });
 };
 
 //定义接受呼叫请求的函数

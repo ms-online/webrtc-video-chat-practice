@@ -69,3 +69,8 @@ export const sendPreOffer = (data) => {
 export const sendPreOfferAnswer = (data) => {
   socket.emit('pre-offer-answer', data);
 };
+
+//Offer发送SDP到信令服务器
+export const sendWebRTCOffer = (data) => {
+  socket.emit('webRTC-offer', data);
+};
