@@ -8,17 +8,20 @@ import RemoteVideoView from '../RemoteVideoView/RemoteVideoView';
 import {
   callStates,
   setCallRejected,
+  setLocalCameraEnabled,
+  setLocalMicrophoneEnabled,
 } from '../../../../store/actions/callActions';
 import ConversationButtons from '../ConversationButtons/ConversationButtons';
-const DirectCall = ({
-  localStream,
-  remoteStream,
-  callerUsername,
-  callState,
-  callingDialogVisible,
-  callRejected,
-  hideCallRejectedDialog,
-}) => {
+const DirectCall = (props) => {
+  const {
+    localStream,
+    remoteStream,
+    callerUsername,
+    callState,
+    callingDialogVisible,
+    callRejected,
+    hideCallRejectedDialog,
+  } = props;
   return (
     <>
       <LocalVideoView localStream={localStream} />
@@ -34,7 +37,7 @@ const DirectCall = ({
         <IncomingCallDialog callerUsername={callerUsername} />
       )}
       {callingDialogVisible && <CallingDialog />}
-      <ConversationButtons />
+      <ConversationButtons {...props} />
     </>
   );
 };
@@ -46,6 +49,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     hideCallRejectedDialog: (callRejectedDetails) =>
       dispatch(setCallRejected(callRejectedDetails)),
+    setCameraEnabled: (enabled) => dispatch(setLocalCameraEnabled(enabled)),
+    setMicrophoneEnabled: (enabled) =>
+      dispatch(setLocalMicrophoneEnabled(enabled)),
   };
 };
 

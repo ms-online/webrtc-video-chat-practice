@@ -6,6 +6,9 @@ export const CALL_SET_CALLING_DIALOG_VISIBLE =
 export const CALL_SET_CALLER_USERNAME = 'CALL_SET_CALLER_USERNAME';
 export const CALL_SET_CALL_REJECTED = 'CALL_SET_CALL_REJECTED';
 export const CALL_SET_REMOTE_STREAM = 'CALL_SET_REMOTE_STREAM';
+export const CALL_SET_LOCAL_MICROPHONE_ENABLED =
+  'CALL_SET_LOCAL_MICROPHONE_ENABLED';
+export const CALL_SET_LOCAL_CAMERA_ENABLED = 'CALL_SET_LOCAL_CAMERA_ENABLED';
 
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
@@ -62,5 +65,21 @@ export const setRemoteStream = (remoteStream) => {
   return {
     type: CALL_SET_REMOTE_STREAM,
     remoteStream,
+  };
+};
+
+//设置mic的开关
+export const setLocalMicrophoneEnabled = (enabled) => {
+  return {
+    type: CALL_SET_LOCAL_MICROPHONE_ENABLED,
+    enabled,
+  };
+};
+
+//设置camera的开关
+export const setLocalCameraEnabled = (enabled) => {
+  return {
+    type: CALL_SET_LOCAL_CAMERA_ENABLED,
+    enabled,
   };
 };
