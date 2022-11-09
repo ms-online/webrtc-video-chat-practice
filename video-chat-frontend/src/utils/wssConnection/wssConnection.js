@@ -49,6 +49,11 @@ export const connectWithSocket = () => {
   socket.on('webRTC-candidate', (data) => {
     webRTCHandler.handleCandidate(data);
   });
+
+  //监听服务器传递的挂断通知
+  socket.on('user-hanged-up', () => {
+    webRTCHandler.handleUserHangedUp();
+  });
 };
 
 //注册新用户
@@ -98,4 +103,9 @@ export const sendWebRTCAnswer = (data) => {
 //发送ICE候选人信息
 export const sendWebRTCCandidate = (data) => {
   socket.emit('webRTC-candidate', data);
+};
+
+//发送挂断通知
+export const sendUserHangedUp = (data) => {
+  socket.emit('user-hanged-up', data);
 };

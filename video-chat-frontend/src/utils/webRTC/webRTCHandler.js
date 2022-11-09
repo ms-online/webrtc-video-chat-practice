@@ -198,12 +198,6 @@ export const rejectIncomingCallRequest = () => {
   resetCallData();
 };
 
-//定义呼叫重置函数
-export const resetCallData = () => {
-  connectUserSocketId = null;
-  store.dispatch(setCallState(callStates.CALL_AVAILABLE));
-};
-
 //应答方处理呼叫方传递过来的Offer SDP
 export const handleOffer = async (data) => {
   await peerConnection.setRemoteDescription(data.offer);
@@ -270,4 +264,38 @@ export const switchForScreenSharingStream = async () => {
     //停止清空轨道
     screenSharingStream.getTracks().forEach((track) => track.stop());
   }
+};
+
+//处理挂断
+export const handleUserHangedUp = () => {
+  resetCallDataAfterHangUp();
+};
+
+//通知挂断
+export const hangUp = () => {
+  //通过服务器向另一方告知想要挂断
+  wss.sendUserHangedUp({
+    connectUserSocketId: connectUserSocketId,
+  });
+
+  //挂断之后进行状态的重置
+  resetCallDataAfterHangUp();
+};
+
+const resetCallDataAfterHangUp = () => {
+  store.dispatch(setRemoteStream(null));
+
+  peerConnection.close();
+  peerConnection = null;
+  createPeerConnection();
+  resetCallData();
+  if (store.getState().call.screenSharingActive) {
+    screenSharingStream.getTracks().forEach((track) => track.stop());
+  }
+};
+
+//定义呼叫重置函数
+export const resetCallData = () => {
+  connectUserSocketId = null;
+  store.dispatch(setCallState(callStates.CALL_AVAILABLE));
 };

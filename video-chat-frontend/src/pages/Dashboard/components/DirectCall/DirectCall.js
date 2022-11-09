@@ -25,7 +25,9 @@ const DirectCall = (props) => {
   return (
     <>
       <LocalVideoView localStream={localStream} />
-      {remoteStream && <RemoteVideoView remoteStream={remoteStream} />}
+      {remoteStream && callState === callStates.CALL_IN_PROGRESS && (
+        <RemoteVideoView remoteStream={remoteStream} />
+      )}
       {/* 不同状态下的直接呼叫对话框 */}
       {callRejected.rejected && (
         <CallRejectDialog
@@ -37,7 +39,9 @@ const DirectCall = (props) => {
         <IncomingCallDialog callerUsername={callerUsername} />
       )}
       {callingDialogVisible && <CallingDialog />}
-      <ConversationButtons {...props} />
+      {remoteStream && callState === callStates.CALL_IN_PROGRESS && (
+        <ConversationButtons {...props} />
+      )}
     </>
   );
 };

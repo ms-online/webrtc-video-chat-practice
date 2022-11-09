@@ -107,4 +107,9 @@ io.on('connection', (socket) => {
       candidate: data.candidate,
     });
   });
+
+  //监听挂断的通知
+  socket.on('user-hanged-up', (data) => {
+    io.to(data.connectUserSocketId).emit('user-hanged-up');
+  });
 });
