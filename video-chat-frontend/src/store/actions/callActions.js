@@ -9,6 +9,7 @@ export const CALL_SET_REMOTE_STREAM = 'CALL_SET_REMOTE_STREAM';
 export const CALL_SET_LOCAL_MICROPHONE_ENABLED =
   'CALL_SET_LOCAL_MICROPHONE_ENABLED';
 export const CALL_SET_LOCAL_CAMERA_ENABLED = 'CALL_SET_LOCAL_CAMERA_ENABLED';
+export const CALL_SET_SCREEN_SHARING_ACTIVE = 'CALL_SET_SCREEN_SHARING_ACTIVE';
 
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
@@ -81,5 +82,13 @@ export const setLocalCameraEnabled = (enabled) => {
   return {
     type: CALL_SET_LOCAL_CAMERA_ENABLED,
     enabled,
+  };
+};
+
+//设置共享屏幕的开关
+export const setScrrenSharingActive = (active) => {
+  return {
+    type: CALL_SET_SCREEN_SHARING_ACTIVE,
+    active,
   };
 };

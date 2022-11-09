@@ -7,6 +7,7 @@ import {
   callStates,
   setCallRejected,
   setRemoteStream,
+  setScrrenSharingActive,
 } from '../../store/actions/callActions';
 import * as wss from '../wssConnection/wssConnection';
 
@@ -230,5 +231,43 @@ export const handleCandidate = async (data) => {
     await peerConnection.addIceCandidate(data.candidate);
   } catch (error) {
     console.log('尝试添加收到的ICE候选人时出错', error);
+  }
+};
+
+let screenSharingStream;
+export const switchForScreenSharingStream = async () => {
+  if (!store.getState().call.screenSharingActive) {
+    try {
+      //获取共享的stream
+      screenSharingStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
+      store.dispatch(setScrrenSharingActive(true));
+      //从RTCpeerConnection中获取所有的senders（发送器）
+      const senders = peerConnection.getSenders();
+      //遍历每个sender,找到类型为video的sender
+      const sender = senders.find(
+        (sender) =>
+          sender.track.kind === screenSharingStream.getVideoTracks()[0].kind
+      );
+      //替换远端视频
+      sender.replaceTrack(screenSharingStream.getVideoTracks()[0]);
+    } catch (error) {
+      console.log('尝试获取屏幕共享流时出错', error);
+    }
+  } else {
+    const localStream = store.getState().call.localStream;
+    const senders = peerConnection.getSenders();
+    //遍历每个sender,找到类型为video的sender
+    const sender = senders.find(
+      (sender) =>
+        sender.track.kind === screenSharingStream.getVideoTracks()[0].kind
+    );
+    //替换远端视频
+    sender.replaceTrack(localStream.getVideoTracks()[0]);
+    store.dispatch(setScrrenSharingActive(false));
+
+    //停止清空轨道
+    screenSharingStream.getTracks().forEach((track) => track.stop());
   }
 };
