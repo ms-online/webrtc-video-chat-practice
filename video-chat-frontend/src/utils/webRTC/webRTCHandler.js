@@ -8,6 +8,7 @@ import {
   setCallRejected,
   setRemoteStream,
   setScrrenSharingActive,
+  resetCallDataState,
 } from '../../store/actions/callActions';
 import * as wss from '../wssConnection/wssConnection';
 
@@ -283,15 +284,17 @@ export const hangUp = () => {
 };
 
 const resetCallDataAfterHangUp = () => {
-  store.dispatch(setRemoteStream(null));
-
   peerConnection.close();
   peerConnection = null;
   createPeerConnection();
   resetCallData();
+
   if (store.getState().call.screenSharingActive) {
     screenSharingStream.getTracks().forEach((track) => track.stop());
   }
+
+  //重置state状态中的数据
+  store.dispatch(resetCallDataState());
 };
 
 //定义呼叫重置函数

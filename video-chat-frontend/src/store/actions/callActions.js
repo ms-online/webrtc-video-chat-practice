@@ -10,6 +10,7 @@ export const CALL_SET_LOCAL_MICROPHONE_ENABLED =
   'CALL_SET_LOCAL_MICROPHONE_ENABLED';
 export const CALL_SET_LOCAL_CAMERA_ENABLED = 'CALL_SET_LOCAL_CAMERA_ENABLED';
 export const CALL_SET_SCREEN_SHARING_ACTIVE = 'CALL_SET_SCREEN_SHARING_ACTIVE';
+export const CALL_RESET_CALL_STATE = 'CALL_RESET_CALL_STATE';
 
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
@@ -90,5 +91,12 @@ export const setScrrenSharingActive = (active) => {
   return {
     type: CALL_SET_SCREEN_SHARING_ACTIVE,
     active,
+  };
+};
+
+//重置挂断后的state状态
+export const resetCallDataState = () => {
+  return {
+    type: CALL_RESET_CALL_STATE,
   };
 };
