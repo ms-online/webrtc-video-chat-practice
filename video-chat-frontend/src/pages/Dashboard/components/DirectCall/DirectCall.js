@@ -9,6 +9,7 @@ import {
   callStates,
   setCallRejected,
 } from '../../../../store/actions/callActions';
+import ConversationButtons from '../ConversationButtons/ConversationButtons';
 const DirectCall = ({
   localStream,
   remoteStream,
@@ -33,6 +34,7 @@ const DirectCall = ({
         <IncomingCallDialog callerUsername={callerUsername} />
       )}
       {callingDialogVisible && <CallingDialog />}
+      <ConversationButtons />
     </>
   );
 };
