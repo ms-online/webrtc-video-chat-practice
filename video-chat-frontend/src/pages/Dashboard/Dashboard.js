@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import logo from '../../resources/logo.png';
 import * as webRTCHandler from '../../utils/webRTC/webRTCHandler';
 import ActiveUserList from './components/ActiveUserList/ActiveUserList';
+import DashboardInformation from './components/DashboardInformation/DashboardInformation';
 import DirectCall from './components/DirectCall/DirectCall';
+import { connect } from 'react-redux';
 import './Dashboard.css';
 
-const Dashboard = () => {
+const Dashboard = ({ username, callState }) => {
   const firstRenderRef = useRef(true);
   useEffect(() => {
     if (firstRenderRef.current) {
@@ -22,6 +24,9 @@ const Dashboard = () => {
         {/* 内容介绍 */}
         <div className='dashboard_content_container'>
           <DirectCall />
+          {callState !== callState.CALL_IN_PROGRESS && (
+            <DashboardInformation username={username} />
+          )}
         </div>
         <div className='dashboard_rooms_container background_secondary_color'>
           房间
@@ -42,4 +47,9 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+const mapStateToProps = ({ dashboard, call }) => ({
+  ...dashboard,
+  ...call,
+});
+
+export default connect(mapStateToProps)(Dashboard);
