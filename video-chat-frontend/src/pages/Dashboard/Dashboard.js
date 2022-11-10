@@ -6,6 +6,7 @@ import DashboardInformation from './components/DashboardInformation/DashboardInf
 import DirectCall from './components/DirectCall/DirectCall';
 import { connect } from 'react-redux';
 import './Dashboard.css';
+import { callStates } from '../../store/actions/callActions';
 
 const Dashboard = ({ username, callState }) => {
   const firstRenderRef = useRef(true);
@@ -24,7 +25,7 @@ const Dashboard = ({ username, callState }) => {
         {/* 内容介绍 */}
         <div className='dashboard_content_container'>
           <DirectCall />
-          {callState !== callState.CALL_IN_PROGRESS && (
+          {callState !== callStates.CALL_IN_PROGRESS && (
             <DashboardInformation username={username} />
           )}
         </div>

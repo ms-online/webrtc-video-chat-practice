@@ -2,7 +2,7 @@ import React from 'react';
 import ActiveUserListItem from './ActiveUserListItem';
 import { connect } from 'react-redux';
 import './ActiveUserList.css';
-function ActiveUserList({ activeUsers }) {
+function ActiveUserList({ activeUsers, callState }) {
   //虚拟活跃用户
   // const activeUsers = [
   //   {
@@ -25,13 +25,17 @@ function ActiveUserList({ activeUsers }) {
   return (
     <div className='active_user_list_container'>
       {activeUsers.map((activeUser) => (
-        <ActiveUserListItem key={activeUser.socketId} activeUser={activeUser} />
+        <ActiveUserListItem
+          key={activeUser.socketId}
+          activeUser={activeUser}
+          callState={callState}
+        />
       ))}
     </div>
   );
 }
 
 //将store作为props绑定给组件
-const mapStateToProps = ({ dashboard }) => ({ ...dashboard });
+const mapStateToProps = ({ dashboard, call }) => ({ ...dashboard, ...call });
 
 export default connect(mapStateToProps)(ActiveUserList);

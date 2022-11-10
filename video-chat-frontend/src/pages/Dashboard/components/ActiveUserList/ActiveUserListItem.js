@@ -1,11 +1,14 @@
 import React from 'react';
 import userAvatar from '../../../../resources/userAvatar.png';
+import { callStates } from '../../../../store/actions/callActions';
 import { callToOtherUser } from '../../../../utils/webRTC/webRTCHandler';
 
-function ActiveUserListItem({ activeUser }) {
+function ActiveUserListItem({ activeUser, callState }) {
   const handlerListItemPressed = () => {
     //点击活跃用户-进行呼叫
-    callToOtherUser(activeUser);
+    if (callState === callStates.CALL_AVAILABLE) {
+      callToOtherUser(activeUser);
+    }
   };
   return (
     <div className='active_user_list_item' onClick={handlerListItemPressed}>
