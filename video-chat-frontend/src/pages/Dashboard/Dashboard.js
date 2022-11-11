@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import logo from '../../resources/logo.png';
 import * as webRTCHandler from '../../utils/webRTC/webRTCHandler';
+import * as webRTCGroupHandler from '../../utils/webRTC/webRTCGroupCallHandler';
 import ActiveUserList from './components/ActiveUserList/ActiveUserList';
 import DashboardInformation from './components/DashboardInformation/DashboardInformation';
 import DirectCall from './components/DirectCall/DirectCall';
@@ -16,6 +17,7 @@ const Dashboard = ({ username, callState }) => {
       return;
     }
     webRTCHandler.getLocalStream();
+    webRTCGroupHandler.connectWithMyPeer();
   }, []);
   return (
     // 外层容器

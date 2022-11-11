@@ -3,18 +3,30 @@ const express = require('express');
 const socket = require('socket.io');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
-
+const { ExpressPeerServer } = require('peer');
+const groupCallHandler = require('./groupCallHandler');
 //服务器初始化
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 //cors包解决跨越访问问题
-app.use(cors);
+app.use(cors());
 
 //监听端口号启动服务器
 const server = app.listen(PORT, () => {
   console.log(`服务器正在${PORT}端口号运行...`);
 });
+
+//使用ExpressPeerServer对象来创建peer服务器
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+});
+
+//使用app.use设置中间件
+app.use('/peerjs', peerServer);
+
+//监听端口号启动Peer服务器
+groupCallHandler.createPeerServerListeners(peerServer);
 
 //传递server对象，初始化io实例
 const io = socket(server, {
