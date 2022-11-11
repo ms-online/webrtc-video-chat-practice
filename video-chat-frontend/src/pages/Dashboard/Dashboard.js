@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import './Dashboard.css';
 import { callStates } from '../../store/actions/callActions';
 import GroupCallRoomsList from './components/GroupCallRoomsList/GroupCallRoomsList';
+import GroupCall from './components/GroupCall/GroupCall';
 
 const Dashboard = ({ username, callState }) => {
   const firstRenderRef = useRef(true);
@@ -28,6 +29,7 @@ const Dashboard = ({ username, callState }) => {
         {/* 内容介绍 */}
         <div className='dashboard_content_container'>
           <DirectCall />
+          <GroupCall />
           {callState !== callStates.CALL_IN_PROGRESS && (
             <DashboardInformation username={username} />
           )}
