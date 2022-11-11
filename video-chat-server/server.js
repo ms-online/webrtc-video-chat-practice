@@ -65,6 +65,11 @@ io.on('connection', (socket) => {
       event: broadcastEventTypes.ACTIVE_USERS,
       activeUsers: peers,
     });
+    //向所有连接到客户端用户广播，并发送群主呼叫房间
+    io.sockets.emit('broadcast', {
+      event: broadcastEventTypes.GROUP_CALL_ROOMS,
+      groupCallRooms,
+    });
   });
 
   //断开连接时移除存储在服务器的用户并向其他客户端进行广播
@@ -87,7 +92,7 @@ io.on('connection', (socket) => {
     });
   });
 
-  // 监听和直接呼叫相关的事件
+  ///////////////////////////////////监听和直接呼叫相关的事件///////////////////////////////////
 
   //监听应答方从客户端发送过来的预呼叫回复并获取data,传递给呼叫方
   socket.on('pre-offer-answer', (data) => {
@@ -127,7 +132,7 @@ io.on('connection', (socket) => {
     io.to(data.connectUserSocketId).emit('user-hanged-up');
   });
 
-  // 监听和群组呼叫相关的事件
+  /////////////////////////////////// 监听和群组呼叫相关的事件///////////////////////////////////
   socket.on('group-call-register', (data) => {
     const roomId = uuidv4();
     socket.join(roomId);
@@ -141,6 +146,9 @@ io.on('connection', (socket) => {
     };
     //将群组呼叫房间添加到房间数组中
     groupCallRooms.push(newGroupCallRoom);
-    console.log(groupCallRooms);
+    io.sockets.emit('broadcast', {
+      event: broadcastEventTypes.GROUP_CALL_ROOMS,
+      groupCallRooms,
+    });
   });
 });

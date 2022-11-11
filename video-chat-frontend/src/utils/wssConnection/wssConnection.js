@@ -56,7 +56,7 @@ export const connectWithSocket = () => {
   });
 };
 
-// 发送和直接呼叫相关的事件
+/////////////////////////////////////发送和直接呼叫相关的事件///////////////////////////////////
 
 //注册新用户
 export const registerNewUser = (username) => {
@@ -76,6 +76,8 @@ const handleBroadcastEvents = (data) => {
       );
       // 派发action，保存活跃用户
       store.dispatch(dashboardActions.setActiveUsers(activeUsers));
+    case broadcastEventTypes.GROUP_CALL_ROOMS:
+      store.dispatch(dashboardActions.setGroupCalls(data.groupCallRooms));
       break;
     default:
       break;
@@ -112,7 +114,7 @@ export const sendUserHangedUp = (data) => {
   socket.emit('user-hanged-up', data);
 };
 
-// 发送和群组呼叫相关的事件
+///////////////////////////////////发送和群组呼叫相关的事件///////////////////////////////////
 
 export const registerGroupCall = (data) => {
   socket.emit('group-call-register', data);

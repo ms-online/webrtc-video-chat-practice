@@ -4,6 +4,7 @@ import * as dashboardActions from '../actions/dashboardActions';
 const initialState = {
   username: '',
   activeUsers: [],
+  groupCallRooms: [],
 };
 
 //reducer
@@ -18,6 +19,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         activeUsers: action.activeUsers,
+      };
+    case dashboardActions.DASHBOARD_SET_GROUP_CALL_ROOMS:
+      return {
+        ...state,
+        groupCallRooms: action.groupCallRooms,
       };
     default:
       return state;
