@@ -8,6 +8,7 @@ import DirectCall from './components/DirectCall/DirectCall';
 import { connect } from 'react-redux';
 import './Dashboard.css';
 import { callStates } from '../../store/actions/callActions';
+import GroupCallRoomsList from './components/GroupCallRoomsList/GroupCallRoomsList';
 
 const Dashboard = ({ username, callState }) => {
   const firstRenderRef = useRef(true);
@@ -32,7 +33,7 @@ const Dashboard = ({ username, callState }) => {
           )}
         </div>
         <div className='dashboard_rooms_container background_secondary_color'>
-          房间
+          <GroupCallRoomsList />
         </div>
       </div>
       {/* 右侧部分 */}
