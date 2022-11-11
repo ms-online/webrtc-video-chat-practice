@@ -38,7 +38,7 @@ const io = socket(server, {
 
 //初始化对等连接用户数组
 let peers = [];
-
+let groupCallRooms = [];
 //定义广播类型的常量
 const broadcastEventTypes = {
   ACTIVE_USERS: 'ACTIVE_USERS',
@@ -87,6 +87,8 @@ io.on('connection', (socket) => {
     });
   });
 
+  // 监听和直接呼叫相关的事件
+
   //监听应答方从客户端发送过来的预呼叫回复并获取data,传递给呼叫方
   socket.on('pre-offer-answer', (data) => {
     console.log('处理预呼叫回复');
@@ -123,5 +125,22 @@ io.on('connection', (socket) => {
   //监听挂断的通知
   socket.on('user-hanged-up', (data) => {
     io.to(data.connectUserSocketId).emit('user-hanged-up');
+  });
+
+  // 监听和群组呼叫相关的事件
+  socket.on('group-call-register', (data) => {
+    const roomId = uuidv4();
+    socket.join(roomId);
+
+    //初始化群组呼叫房间
+    const newGroupCallRoom = {
+      peerId: data.peerId,
+      hostName: data.username,
+      socketId: socket.id,
+      roomId: roomId,
+    };
+    //将群组呼叫房间添加到房间数组中
+    groupCallRooms.push(newGroupCallRoom);
+    console.log(groupCallRooms);
   });
 });
