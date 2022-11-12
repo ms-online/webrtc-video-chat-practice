@@ -31,3 +31,20 @@ export const createNewGroupCall = () => {
   store.dispatch(setGroupCallActive(true));
   store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
 };
+
+//创建加入群组呼叫的方法
+export const joinGroupCall = (hostSocketId, roomId) => {
+  const localStream = store.getState().call.localStream;
+  wss.userWantsToJoinGroupCall({
+    peerId: myPeerId,
+    hostSocketId,
+    roomId,
+    streamId: localStream.id,
+  });
+
+  store.dispatch(setGroupCallActive(true));
+  store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
+};
+
+//创建连接新加入群组用户的方法
+export const connectToNewUser = () => {};

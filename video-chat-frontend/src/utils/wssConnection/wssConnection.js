@@ -2,6 +2,7 @@ import socketClient from 'socket.io-client';
 import store from '../../store/store';
 import * as dashboardActions from '../../store/actions/dashboardActions';
 import * as webRTCHandler from '../webRTC/webRTCHandler';
+import * as webRTCGroupCallHandler from '../webRTC/webRTCGroupCallHandler';
 //定义广播类型的常量
 const broadcastEventTypes = {
   ACTIVE_USERS: 'ACTIVE_USERS',
@@ -53,6 +54,11 @@ export const connectWithSocket = () => {
   //监听服务器传递的挂断通知
   socket.on('user-hanged-up', () => {
     webRTCHandler.handleUserHangedUp();
+  });
+
+  //监听群组呼叫相关内容
+  socket.on('group-call-join-request', (data) => {
+    webRTCGroupCallHandler.connectToNewUser(data);
   });
 };
 
@@ -118,4 +124,8 @@ export const sendUserHangedUp = (data) => {
 
 export const registerGroupCall = (data) => {
   socket.emit('group-call-register', data);
+};
+
+export const userWantsToJoinGroupCall = (data) => {
+  socket.emit('group-call-join-request', data);
 };

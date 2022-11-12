@@ -151,4 +151,14 @@ io.on('connection', (socket) => {
       groupCallRooms,
     });
   });
+
+  socket.on('group-call-join-request', (data) => {
+    io.to(data.roomId).emit('group-call-join-request', {
+      peerId: data.peerId,
+      streamId: data.streamId,
+    });
+
+    //加入房间
+    socket.join(data.roomId);
+  });
 });
