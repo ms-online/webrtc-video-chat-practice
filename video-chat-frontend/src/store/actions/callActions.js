@@ -11,6 +11,7 @@ export const CALL_SET_LOCAL_MICROPHONE_ENABLED =
 export const CALL_SET_LOCAL_CAMERA_ENABLED = 'CALL_SET_LOCAL_CAMERA_ENABLED';
 export const CALL_SET_SCREEN_SHARING_ACTIVE = 'CALL_SET_SCREEN_SHARING_ACTIVE';
 export const CALL_RESET_CALL_STATE = 'CALL_RESET_CALL_STATE';
+export const CALL_SET_GROUP_CALL_ACTIVE = 'CALL_SET_GROUP_CALL_ACTIVE';
 
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
@@ -98,5 +99,13 @@ export const setScrrenSharingActive = (active) => {
 export const resetCallDataState = () => {
   return {
     type: CALL_RESET_CALL_STATE,
+  };
+};
+
+//设置群组呼叫组件的显示状态
+export const setGroupCallActive = (active) => {
+  return {
+    type: CALL_SET_GROUP_CALL_ACTIVE,
+    active,
   };
 };
