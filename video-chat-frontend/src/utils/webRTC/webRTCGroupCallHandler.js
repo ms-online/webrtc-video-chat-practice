@@ -4,6 +4,7 @@ import {
   setGroupCallActive,
   setCallState,
   callStates,
+  setGroupCallStreams,
 } from '../../store/actions/callActions';
 let myPeer;
 let myPeerId;
@@ -22,7 +23,12 @@ export const connectWithMyPeer = () => {
   myPeer.on('call', (call) => {
     call.answer(store.getState().call.localStream);
     call.on('stream', (incomingStream) => {
-      console.log('接收到流入的媒体流1');
+      const streams = store.getState().call.groupCallStreams;
+      const stream = streams.find((stream) => stream.id === incomingStream.id);
+
+      if (!stream) {
+        addVideoStream(incomingStream);
+      }
     });
   });
 };
@@ -59,6 +65,21 @@ export const connectToNewUser = (data) => {
 
   const call = myPeer.call(data.peerId, localStream);
   call.on('stream', (incomingStream) => {
-    console.log('接收到流入的媒体流2');
+    const streams = store.getState().call.groupCallStreams;
+    const stream = streams.find((stream) => stream.id === incomingStream.id);
+
+    if (!stream) {
+      addVideoStream(incomingStream);
+    }
   });
+};
+
+//添加传入流到群组呼叫流数组中
+const addVideoStream = (incomingStream) => {
+  const groupCallStreams = [
+    ...store.getState().call.groupCallStreams,
+    incomingStream,
+  ];
+
+  store.dispatch(setGroupCallStreams(groupCallStreams));
 };

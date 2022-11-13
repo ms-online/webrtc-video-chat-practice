@@ -12,7 +12,7 @@ export const CALL_SET_LOCAL_CAMERA_ENABLED = 'CALL_SET_LOCAL_CAMERA_ENABLED';
 export const CALL_SET_SCREEN_SHARING_ACTIVE = 'CALL_SET_SCREEN_SHARING_ACTIVE';
 export const CALL_RESET_CALL_STATE = 'CALL_RESET_CALL_STATE';
 export const CALL_SET_GROUP_CALL_ACTIVE = 'CALL_SET_GROUP_CALL_ACTIVE';
-
+export const CALL_SET_GROUP_CALL_STREAMS = 'CALL_SET_GROUP_CALL_STREAMS';
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
   CALL_UNAVAILABLE: 'CALL_UNAVAILABLE',
@@ -107,5 +107,13 @@ export const setGroupCallActive = (active) => {
   return {
     type: CALL_SET_GROUP_CALL_ACTIVE,
     active,
+  };
+};
+
+//设置群组呼叫房间中的媒体流
+export const setGroupCallIncomingStreams = (groupCallStreams) => {
+  return {
+    type: CALL_SET_GROUP_CALL_STREAMS,
+    groupCallStreams,
   };
 };
