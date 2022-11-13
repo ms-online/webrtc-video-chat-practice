@@ -60,6 +60,11 @@ export const connectWithSocket = () => {
   socket.on('group-call-join-request', (data) => {
     webRTCGroupCallHandler.connectToNewUser(data);
   });
+
+  //监听服务器发送的有用户离开的通知
+  socket.on('group-call-user-left', (data) => {
+    webRTCGroupCallHandler.removeInactiveStream(data);
+  });
 };
 
 /////////////////////////////////////发送和直接呼叫相关的事件///////////////////////////////////
@@ -128,4 +133,8 @@ export const registerGroupCall = (data) => {
 
 export const userWantsToJoinGroupCall = (data) => {
   socket.emit('group-call-join-request', data);
+};
+
+export const userLeftGroupCall = (data) => {
+  socket.emit('group-call-user-left', data);
 };

@@ -14,12 +14,19 @@ const GroupCall = ({
     //创建房间
     webRTCGroupCallHandler.createNewGroupCall();
   };
+  const LeaveRoom = () => {
+    //离开房间
+    webRTCGroupCallHandler.leaveGroupCall();
+  };
   return (
     <>
       {localStream && callState !== callStates.CALL_IN_PROGRESS && (
         <GroupCallButton onClickHandler={createRoom} label='创建房间' />
       )}
       {groupCallActive && <GroupCallRoom groupCallStreams={groupCallStreams} />}
+      {groupCallActive && (
+        <GroupCallButton onClickHandler={LeaveRoom} label='离开房间' />
+      )}
     </>
   );
 };

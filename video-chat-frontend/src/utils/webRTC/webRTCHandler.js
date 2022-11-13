@@ -22,7 +22,10 @@ const preOfferAnswers = {
 
 //默认定义
 const defaultConstrains = {
-  video: true,
+  video: {
+    width: 480,
+    height: 360,
+  },
   audio: true,
 };
 

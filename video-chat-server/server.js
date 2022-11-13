@@ -161,4 +161,14 @@ io.on('connection', (socket) => {
     //加入房间
     socket.join(data.roomId);
   });
+
+  socket.on('group-call-user-left', (data) => {
+    //从房间中移除用户
+    socket.leave(data.roomId);
+
+    //通知房间中的其他用户有人离开
+    io.to(data.roomId).emit('group-call-user-left', {
+      streamId: data.streamId,
+    });
+  });
 });

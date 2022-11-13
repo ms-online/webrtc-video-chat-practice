@@ -13,6 +13,7 @@ export const CALL_SET_SCREEN_SHARING_ACTIVE = 'CALL_SET_SCREEN_SHARING_ACTIVE';
 export const CALL_RESET_CALL_STATE = 'CALL_RESET_CALL_STATE';
 export const CALL_SET_GROUP_CALL_ACTIVE = 'CALL_SET_GROUP_CALL_ACTIVE';
 export const CALL_SET_GROUP_CALL_STREAMS = 'CALL_SET_GROUP_CALL_STREAMS';
+export const CALL_CLEAR_GROUP_CALL_DATA = 'CALL_CLEAR_GROUP_CALL_DATA';
 //呼叫状态，便于管理组件：可用，不可用，请求，正在进行中
 export const callStates = {
   CALL_UNAVAILABLE: 'CALL_UNAVAILABLE',
@@ -115,5 +116,12 @@ export const setGroupCallIncomingStreams = (groupCallStreams) => {
   return {
     type: CALL_SET_GROUP_CALL_STREAMS,
     groupCallStreams,
+  };
+};
+
+//重置离开群组呼叫房间后的状态
+export const clearGroupCallData = () => {
+  return {
+    type: CALL_CLEAR_GROUP_CALL_DATA,
   };
 };
