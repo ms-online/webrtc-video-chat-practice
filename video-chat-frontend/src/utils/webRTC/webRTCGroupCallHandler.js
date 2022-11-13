@@ -18,6 +18,13 @@ export const connectWithMyPeer = () => {
     console.log('成功连接到PeerServer');
     myPeerId = id;
   });
+
+  myPeer.on('call', (call) => {
+    call.answer(store.getState().call.localStream);
+    call.on('stream', (incomingStream) => {
+      console.log('接收到流入的媒体流1');
+    });
+  });
 };
 
 //创建新的群组呼叫
@@ -47,4 +54,11 @@ export const joinGroupCall = (hostSocketId, roomId) => {
 };
 
 //创建连接新加入群组用户的方法
-export const connectToNewUser = () => {};
+export const connectToNewUser = (data) => {
+  const localStream = store.getState().call.localStream;
+
+  const call = myPeer.call(data.peerId, localStream);
+  call.on('stream', (incomingStream) => {
+    console.log('接收到流入的媒体流2');
+  });
+};

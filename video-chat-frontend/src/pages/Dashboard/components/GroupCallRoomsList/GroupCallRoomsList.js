@@ -4,7 +4,7 @@ import GroupCallRoomsListItem from './GroupCallRoomsListItem';
 import './GroupCallRoomsList.css';
 
 const GroupCallRoomsList = ({ groupCallRooms }) => {
-  console.log(groupCallRooms);
+  // console.log(groupCallRooms);
   return (
     <>
       {groupCallRooms?.map((room) => (
