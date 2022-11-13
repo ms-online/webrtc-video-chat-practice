@@ -4,7 +4,7 @@ import {
   setGroupCallActive,
   setCallState,
   callStates,
-  setGroupCallStreams,
+  setGroupCallIncomingStreams,
 } from '../../store/actions/callActions';
 let myPeer;
 let myPeerId;
@@ -81,5 +81,5 @@ const addVideoStream = (incomingStream) => {
     incomingStream,
   ];
 
-  store.dispatch(setGroupCallStreams(groupCallStreams));
+  store.dispatch(setGroupCallIncomingStreams(groupCallStreams));
 };
