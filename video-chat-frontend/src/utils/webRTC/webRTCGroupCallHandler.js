@@ -116,6 +116,10 @@ export const clearGroupData = () => {
   //销毁流并且关闭连接
   myPeer.destroy();
   connectWithMyPeer();
+
+  const localStream = store.getState().call.localStream;
+  localStream.getVideoTracks()[0].enabled = true;
+  localStream.getAudioTracks()[0].enabled = true;
 };
 
 //移除离开房间的用户的stream流

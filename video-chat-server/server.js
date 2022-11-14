@@ -80,6 +80,16 @@ io.on('connection', (socket) => {
       event: broadcastEventTypes.ACTIVE_USERS,
       activeUsers: peers,
     });
+
+    //关闭host创建所创建的群组呼叫房间
+    groupCallRooms = groupCallRooms.filter(
+      (room) => room.socketId !== socket.id
+    );
+    //向其他人进行广播，更新groupCallroom列表
+    io.sockets.emit('broadcast', {
+      event: broadcastEventTypes.GROUP_CALL_ROOMS,
+      groupCallRooms,
+    });
   });
 
   //监听客户端发送过来的预呼叫并获取data，传递给应答方

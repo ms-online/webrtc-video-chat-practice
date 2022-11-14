@@ -92,6 +92,8 @@ const reducer = (state = initialState, action) => {
         groupCallActive: false,
         groupCallStreams: [],
         callState: callActions.callStates.CALL_AVAILABLE,
+        localCameraEnabled: true,
+        localMicrophoneEnabled: true,
       };
     default:
       return state;
