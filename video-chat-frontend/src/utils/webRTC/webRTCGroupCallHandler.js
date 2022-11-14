@@ -7,9 +7,12 @@ import {
   setGroupCallIncomingStreams,
   clearGroupCallData,
 } from '../../store/actions/callActions';
+
 let myPeer;
 let myPeerId;
 let groupCallRoomId;
+let groupCallHost = false;
+
 export const connectWithMyPeer = () => {
   myPeer = new window.Peer(undefined, {
     path: '/peerjs',
@@ -37,6 +40,7 @@ export const connectWithMyPeer = () => {
 
 //创建新的群组呼叫
 export const createNewGroupCall = () => {
+  groupCallHost = true;
   wss.registerGroupCall({
     username: store.getState().dashboard.username,
     peerId: myPeerId,
@@ -89,14 +93,26 @@ const addVideoStream = (incomingStream) => {
 
 //离开群组呼叫房间
 export const leaveGroupCall = () => {
-  wss.userLeftGroupCall({
-    roomId: groupCallRoomId,
-    streamId: store.getState().call.localStream.id,
-  });
+  if (groupCallHost) {
+    //作为房主离开时需要向服务器告知关闭他所创建的房间
+    wss.groupCallCloseByHost({
+      peerId: myPeerId,
+    });
+  } else {
+    wss.userLeftGroupCall({
+      roomId: groupCallRoomId,
+      streamId: store.getState().call.localStream.id,
+    });
+  }
 
   //状态重置
+  clearGroupData();
+};
+export const clearGroupData = () => {
   groupCallRoomId = null;
+  groupCallHost = null;
   store.dispatch(clearGroupCallData());
+  console.log(1);
   //销毁流并且关闭连接
   myPeer.destroy();
   connectWithMyPeer();
@@ -109,4 +125,13 @@ export const removeInactiveStream = (data) => {
     .call.groupCallStreams.filter((stream) => stream.id !== data.streamId);
 
   store.dispatch(setGroupCallIncomingStreams(groupCallStreams));
+};
+
+//验证当前用户是否加入了群组呼叫，如果加入则返回该房间的rooId
+export const checkActiveGroupCall = () => {
+  if (store.getState().call.groupCallActive) {
+    return groupCallRoomId;
+  } else {
+    return false;
+  }
 };

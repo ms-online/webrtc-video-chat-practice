@@ -87,8 +87,25 @@ const handleBroadcastEvents = (data) => {
       );
       // 派发action，保存活跃用户
       store.dispatch(dashboardActions.setActiveUsers(activeUsers));
+      break;
     case broadcastEventTypes.GROUP_CALL_ROOMS:
-      store.dispatch(dashboardActions.setGroupCalls(data.groupCallRooms));
+      const groupCallRooms = data.groupCallRooms?.filter(
+        (room) => room.socketId !== socket.id
+      );
+
+      const activeGroupCallRoomId =
+        webRTCGroupCallHandler.checkActiveGroupCall();
+
+      if (activeGroupCallRoomId) {
+        const room = groupCallRooms.find(
+          (room) => room.roomId === activeGroupCallRoomId
+        );
+        if (!room) {
+          webRTCGroupCallHandler.clearGroupData();
+        }
+      }
+
+      store.dispatch(dashboardActions.setGroupCalls(groupCallRooms));
       break;
     default:
       break;
@@ -137,4 +154,7 @@ export const userWantsToJoinGroupCall = (data) => {
 
 export const userLeftGroupCall = (data) => {
   socket.emit('group-call-user-left', data);
+};
+export const groupCallCloseByHost = (data) => {
+  socket.emit('group-call-closed-by-host', data);
 };

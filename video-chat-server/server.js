@@ -171,4 +171,16 @@ io.on('connection', (socket) => {
       streamId: data.streamId,
     });
   });
+
+  socket.on('group-call-closed-by-host', (data) => {
+    //关闭host创建所创建的群组呼叫房间
+    groupCallRooms = groupCallRooms.filter(
+      (room) => room.peerId !== data.peerId
+    );
+    //向其他人进行广播，更新groupCallroom列表
+    io.sockets.emit('broadcast', {
+      event: broadcastEventTypes.GROUP_CALL_ROOMS,
+      groupCallRooms,
+    });
+  });
 });
