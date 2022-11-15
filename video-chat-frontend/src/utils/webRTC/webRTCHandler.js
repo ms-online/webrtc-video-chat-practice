@@ -42,7 +42,7 @@ const configuration = {
 let connectUserSocketId;
 let rejectedReason;
 let peerConnection;
-
+let dataChannel;
 //获取用户的本地媒体流并保存到store中
 export const getLocalStream = () => {
   navigator.mediaDevices
@@ -75,6 +75,23 @@ const createPeerConnection = () => {
     store.dispatch(setRemoteStream(stream));
   };
 
+  //处理传入数据通道的信息
+  peerConnection.ondatachannel = (event) => {
+    const dataChannel = event.channel;
+    //监听dataChannel是否开启
+    dataChannel.onopen = () => {
+      console.log('对等连接已经准备好接收数据通道的消息');
+    };
+    dataChannel.onmessage = (event) => {
+      //聊天逻辑
+    };
+  };
+
+  //创建数据通道
+  dataChannel = peerConnection.createDataChannel('chat');
+  dataChannel.onopen = () => {
+    console.log('聊天数据通道已经成功开启');
+  };
   //监听icecandidate事件并将更改后的描述信息传送给remote远端RTCPeerConnection并更新远端设备源
   peerConnection.onicecandidate = (event) => {
     //从STUN服务器获取ICE
