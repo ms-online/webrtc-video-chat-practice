@@ -9,6 +9,7 @@ import {
   setRemoteStream,
   setScrrenSharingActive,
   resetCallDataState,
+  setMessage,
 } from '../../store/actions/callActions';
 import * as wss from '../wssConnection/wssConnection';
 
@@ -83,7 +84,7 @@ const createPeerConnection = () => {
       console.log('对等连接已经准备好接收数据通道的消息');
     };
     dataChannel.onmessage = (event) => {
-      store.dispatch(setMessage(event.data));
+      store.dispatch(setMessage(true, event.data));
     };
   };
 
