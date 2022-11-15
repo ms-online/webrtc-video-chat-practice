@@ -83,7 +83,7 @@ const createPeerConnection = () => {
       console.log('对等连接已经准备好接收数据通道的消息');
     };
     dataChannel.onmessage = (event) => {
-      //聊天逻辑
+      store.dispatch(setMessage(event.data));
     };
   };
 
@@ -92,6 +92,7 @@ const createPeerConnection = () => {
   dataChannel.onopen = () => {
     console.log('聊天数据通道已经成功开启');
   };
+
   //监听icecandidate事件并将更改后的描述信息传送给remote远端RTCPeerConnection并更新远端设备源
   peerConnection.onicecandidate = (event) => {
     //从STUN服务器获取ICE
@@ -321,4 +322,9 @@ const resetCallDataAfterHangUp = () => {
 export const resetCallData = () => {
   connectUserSocketId = null;
   store.dispatch(setCallState(callStates.CALL_AVAILABLE));
+};
+
+//定义传递信息的函数
+export const sendMessageUsingDataChannel = (message) => {
+  dataChannel.send(message);
 };
