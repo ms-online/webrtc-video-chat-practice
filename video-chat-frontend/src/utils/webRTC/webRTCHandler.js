@@ -277,8 +277,7 @@ export const switchForScreenSharingStream = async () => {
     const senders = peerConnection.getSenders();
     //遍历每个sender,找到类型为video的sender
     const sender = senders.find(
-      (sender) =>
-        sender.track.kind === screenSharingStream.getVideoTracks()[0].kind
+      (sender) => sender.track.kind === localStream.getVideoTracks()[0].kind
     );
     //替换远端视频
     sender.replaceTrack(localStream.getVideoTracks()[0]);
